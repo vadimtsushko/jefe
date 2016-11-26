@@ -159,11 +159,15 @@ class _PubSpecCommandsSingleProjectImpl implements PubSpecCommands {
     switch (type) {
       case DependencyType.path:
         return new PathReference(p.relative(project.installDirectory.path,
-            from: _project.installDirectory.path));
+            from: _project.installDirectory.path).replaceAll(r'\','/'));
 
       case DependencyType.git:
+        String uri = project.gitUri;
+        if (Uri.parse(uri).userInfo.isEmpty) {
+          uri = uri.replaceFirst('https://','git://');
+        }
         return new GitReference(
-            project.gitUri, await project.currentGitCommitHash);
+            uri, await project.currentGitCommitHash);
 
       case DependencyType.hosted:
         return _getHostedReference(

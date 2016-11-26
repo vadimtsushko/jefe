@@ -15,10 +15,16 @@ int _processCount = 0;
 Future<ProcessResult> runCommand(String command, List<String> args,
     {bool throwOnError: true, String processWorkingDir}) async {
   _processCount++;
+  if (command.contains(' ')) {
+    command = '"$command"';
+  }
   _log.finest('> "$command ${args.join(' ')}"');
-
-  final result =
-      await Process.run(command, args, workingDirectory: processWorkingDir);
+//  List<String> windowsArgs = ['/C', '"$command"']..addAll(args);
+  final result = await Process.run(command, args,
+      workingDirectory: processWorkingDir, runInShell: true);
+//  Process.run()
+//  final result =
+//      await Process.run('cmd', windowsArgs, workingDirectory: processWorkingDir);
 
   _processCount--;
 
