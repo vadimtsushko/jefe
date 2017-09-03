@@ -163,9 +163,9 @@ class _PubSpecCommandsSingleProjectImpl implements PubSpecCommands {
 
       case DependencyType.git:
         String uri = project.gitUri;
-        if (Uri.parse(uri).userInfo.isEmpty) {
-          uri = uri.replaceFirst('https://','git://');
-        }
+//        if (Uri.parse(uri).userInfo.isEmpty) {
+//          uri = uri.replaceFirst('https://','git://');
+//        }
         return new GitReference(
             uri, await project.currentGitCommitHash);
 
